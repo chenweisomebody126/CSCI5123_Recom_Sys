@@ -1,7 +1,6 @@
 package org.lenskit.mooc.nonpers.mean;
 
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2IntOpenHashMap;
 import org.lenskit.data.dao.DataAccessObject;
 import org.lenskit.data.ratings.Rating;
 import org.lenskit.inject.Transient;
@@ -11,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
+import java.util.*;
 
 /**
  * Provider class that builds the mean rating item scorer, computing item means from the
@@ -49,20 +49,40 @@ public class ItemMeanModelProvider implements Provider<ItemMeanModel> {
      *
      * @return The item mean model with mean ratings for all items.
      */
+
     @Override
+    @SuppressWarnings("deprecated")
     public ItemMeanModel get() {
         // TODO Set up data structures for computing means
+        Map<Long, List<Double>> map = new HashMap<>();
 
         try (ObjectStream<Rating> ratings = dao.query(Rating.class).stream()) {
             for (Rating r: ratings) {
                 // this loop will run once for each rating in the data set
                 // TODO process this rating
+                if (!map.containsKey(r.getItemId())) {
+                    map.put(r.getItemId(), new ArrayList<Double>());
+                }
+                map.get(r.getItemId()).add(r.getValue());
+
             }
+
+
         }
 
         Long2DoubleOpenHashMap means = new Long2DoubleOpenHashMap();
         // TODO Finalize means to store them in the mean model
+        for (Long itemId : map.keySet()) {
+            double sum = 0;
+            for (Double rating : map.get(itemId)) {
+                sum += rating;
+            }
+            double avg = sum / map.get(itemId).size();
+            means.put(itemId, (Double) avg);
+        }
 
+        logger.info("get means {}", means.get(2959));
+        logger.info("get means {}", means.get(1203));
         logger.info("computed mean ratings for {} items", means.size());
         return new ItemMeanModel(means);
     }
