@@ -68,12 +68,31 @@ public class LiftAssociationModelProvider implements Provider<AssociationModel> 
         for (Long2ObjectMap.Entry<LongSortedSet> xEntry: itemUsers.long2ObjectEntrySet()) {
             long xId = xEntry.getLongKey();
             LongSortedSet xUsers = xEntry.getValue();
+            long[] xUsersList = xUsers.toArray(new long[0]);
 
             // set up a map to hold the scores for each 'y' item
             Long2DoubleMap itemScores = new Long2DoubleOpenHashMap();
 
             // TODO Compute lift association formulas for all other 'Y' items with respect to this 'X'
 
+            // loop over the 'y' items
+            for (Long2ObjectMap.Entry<LongSortedSet> yEntry: itemUsers.long2ObjectEntrySet()) {
+                long yId = yEntry.getLongKey();
+                LongSortedSet yUsers = yEntry.getValue();
+                long[] yUsersList = yUsers.toArray(new long[0]);
+                double itemScore = 0.0;
+
+
+                // TODO Compute P(Y & X) / P(X) and store in itemScores
+                if (yId != xId) {
+                    for (int i = 0; i < yUsersList.length; ++i) {
+                        if (xUsers.contains(yUsersList[i])) itemScore++;
+                    }
+                    itemScore = itemScore * allUsers.size() / yUsersList.length / xUsersList.length;
+                }
+
+                itemScores.put(yId, itemScore);
+            }
             // save the score map to the main map
             assocMatrix.put(xId, itemScores);
         }

@@ -61,48 +61,33 @@ public class BasicAssociationModelProvider implements Provider<AssociationModel>
         for (Long2ObjectMap.Entry<LongSortedSet> xEntry: itemUsers.long2ObjectEntrySet()) {
             long xId = xEntry.getLongKey();
             LongSortedSet xUsers = xEntry.getValue();
+            long[] xUsersList = xUsers.toArray(new long[0]);
 
             // set up a map to hold the scores for each 'y' item for this 'x'
             Long2DoubleMap itemScores = new Long2DoubleOpenHashMap();
 
-
             // loop over the 'y' items
-            for (Long2ObjectMap.Entry<LongSortedSet> yEntry : itemUsers.long2ObjectEntrySet()) {
+            for (Long2ObjectMap.Entry<LongSortedSet> yEntry: itemUsers.long2ObjectEntrySet()) {
                 long yId = yEntry.getLongKey();
                 LongSortedSet yUsers = yEntry.getValue();
+                long[] yUsersList = yUsers.toArray(new long[0]);
+                double itemScore = 0.0;
+
                 // TODO Compute P(Y & X) / P(X) and store in itemScores
+                if (yId != xId) {
+                    for (int i = 0; i < yUsersList.length; ++i) {
+                        if (xUsers.contains(yUsersList[i])) itemScore++;
+                    }
+                    itemScore = itemScore / xUsersList.length;
+                }
 
-//                if (xId != yId){
-//                    int xyCount =0;
-//                    for (long xUser: xUsers){
-//                        for (long yUser : yUsers){
-//                            if (xUser == yUser){
-//                                xyCount += 1;
-//                            }
-//                        }
-//                    }
-//                    if(xyCount !=0){
-//                        double itemScore = (double) (xyCount / xUsers.size());
-//                        itemScores.put(yId, itemScore);
-//                    }
-//                }
-               if (xId != yId) {
-                   LongSortedSet xyIntersection = new LongLinkedOpenHashSet(xUsers);
-                   xyIntersection.retainAll(yUsers);
-                   double itemScore =0.0;
-                   if (xUsers.isEmpty()){
-                       itemScore = 0;
-                   } else{
-                       itemScore = (double) (xyIntersection.size() / xUsers.size());
-                   }
-                   itemScores.put(yId, itemScore);
-
-               }
-
-                // save the score map to the main map
-                assocMatrix.put(xId, itemScores);
+                itemScores.put(yId, itemScore);
             }
+
+            // save the score map to the main map
+            assocMatrix.put(xId, itemScores);
         }
+
         return new AssociationModel(assocMatrix);
     }
 }

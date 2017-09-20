@@ -11,9 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An item-based item scorer that uses association rules.
@@ -63,11 +61,45 @@ public class AssociationItemBasedItemRecommender extends AbstractItemBasedItemRe
      * @param candidates The candidate items (set of items that can possibly be recommended).
      * @return The list of results.
      */
+
+
+
     private ResultList recommendItems(int n, long refItem, LongSet candidates) {
         List<Result> results = new ArrayList<>();
 
         // TODO Compute the n highest-scoring items from candidates
+        PriorityQueue<Result> pq = new PriorityQueue<>(new Comparator<Result>() {
+            @Override
+            public int compare(Result o1, Result o2) {
+                if (o1.getScore() < o2.getScore() ){
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
 
+
+        if (model.hasItem(refItem)) {
+            for (long candidate : candidates) {
+                double candidateScore = model.getItemAssociation(refItem, candidate);
+                if(pq.size() <n) {
+                    pq.offer(Results.create(candidate, candidateScore));
+                } else{
+                    if (pq.peek().getScore() < candidateScore){
+                        pq.poll();
+                        pq.offer(Results.create(candidate, candidateScore));
+                    }
+                }
+            }
+        }
+        while (!pq.isEmpty()){
+            Result r =pq.poll();
+            results.add(r);
+        }
+
+        Collections.reverse(results);
+        logger.info("get means {}", results);
         return Results.newResultList(results);
     }
 }
