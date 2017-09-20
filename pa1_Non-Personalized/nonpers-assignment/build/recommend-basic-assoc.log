@@ -1,0 +1,64 @@
+23:11:57.789 INFO [main] org.lenskit.cli.Main: Starting LensKit 3.0-M1 on Java 1.8.0_131 from Oracle Corporation
+23:11:57.860 DEBUG [main] org.lenskit.LenskitInfo: have 5573 active revisions
+23:11:57.881 DEBUG [main] org.lenskit.cli.Main: Built from Git revision c0210fa3281ef8b15b0959bcd5fced43c5fec38a
+23:11:57.881 DEBUG [main] org.lenskit.cli.Main: Using VM 'Java HotSpot(TM) 64-Bit Server VM' version 25.131-b11 from Oracle Corporation
+23:11:57.881 INFO [main] org.lenskit.cli.Main: Have 8 processors and heap limit of 3641 MiB
+23:11:57.934 INFO [main] org.lenskit.cli.util.RecommenderLoader: creating fresh recommender
+23:11:58.661 INFO [main] org.lenskit.config.ConfigurationLoader: loading script from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/etc/simple-assoc.groovy
+23:11:59.882 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source ratings with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
+23:11:59.882 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/ratings.csv
+23:11:59.909 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source ratings to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/ratings.csv
+23:11:59.922 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: using delimiter ,
+23:11:59.923 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading header
+23:11:59.924 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading entities of type EntityType[rating]
+23:12:00.025 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.ratings.RatingBuilder: using entity builder {}
+23:12:00.026 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source movies with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
+23:12:00.026 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movies.csv
+23:12:00.026 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source movies to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movies.csv
+23:12:00.026 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: using delimiter ,
+23:12:00.026 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading header
+23:12:00.026 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading entities of type EntityType[item]
+23:12:00.027 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
+23:12:00.027 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source tags with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
+23:12:00.027 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/tags.csv
+23:12:00.027 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source tags to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/tags.csv
+23:12:00.027 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: using delimiter ,
+23:12:00.028 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading header
+23:12:00.028 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading entities of type EntityType[item-tag]
+23:12:00.028 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
+23:12:00.031 DEBUG [main] org.lenskit.LenskitRecommenderEngineBuilder: building graph from 3 configurations
+23:12:00.179 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: replacing nodes in graph with 9 nodes
+23:12:00.192 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: found 5 shared nodes
+23:12:02.519 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[user] from EntityType[rating] (column TypedName[user: long])
+23:12:02.906 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[item] from EntityType[rating] (column TypedName[item: long])
+23:12:02.996 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 2500 entities with type EntityType[item] and 2 indexes
+23:12:03.065 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 264505 entities with type EntityType[rating] and 2 indexes
+23:12:03.094 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 94875 entities with type EntityType[item-tag] and 2 indexes
+23:12:03.096 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 862 entities with type EntityType[user] and 2 indexes
+23:12:04.232 DEBUG [main] org.lenskit.mooc.nonpers.assoc.AssociationModel: transforming input map for 2500 items into log data
+23:12:04.247 ERROR [main] org.lenskit.mooc.nonpers.assoc.AssociationModel: no score found for items 1 and 2
+23:12:04.267 ERROR [main] org.lenskit.cli.Main: error running command: org.lenskit.api.RecommenderBuildException: cannot instantiate (Provider(org.lenskit.mooc.nonpers.assoc.BasicAssociationModelProvider), MEMOIZE)
+org.lenskit.api.RecommenderBuildException: cannot instantiate (Provider(org.lenskit.mooc.nonpers.assoc.BasicAssociationModelProvider), MEMOIZE)
+	at org.lenskit.inject.NodeInstantiator.apply(NodeInstantiator.java:72) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.inject.NodeInstantiator$DefaultImpl.apply(NodeInstantiator.java:82) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.inject.InstantiatingNodeProcessor.processNode(InstantiatingNodeProcessor.java:54) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.inject.NodeProcessors.processNodes(NodeProcessors.java:92) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.inject.RecommenderInstantiator.replaceShareableNodes(RecommenderInstantiator.java:113) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.inject.RecommenderInstantiator.instantiate(RecommenderInstantiator.java:82) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.LenskitRecommenderEngineBuilder.build(LenskitRecommenderEngineBuilder.java:144) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.LenskitRecommenderEngineBuilder.build(LenskitRecommenderEngineBuilder.java:112) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.cli.util.RecommenderLoader.loadEngine(RecommenderLoader.java:87) ~[lenskit-cli-3.0-M1.jar:na]
+	at org.lenskit.cli.commands.GlobalRecommend.execute(GlobalRecommend.java:72) ~[lenskit-cli-3.0-M1.jar:na]
+	at org.lenskit.cli.Main.main(Main.java:73) ~[lenskit-cli-3.0-M1.jar:na]
+Caused by: org.grouplens.grapht.ConstructionException: Error invoking provider org.grouplens.grapht.reflect.internal.ClassInstantiator@54e22bdd
+	at org.grouplens.grapht.Instantiators$ProviderInstantiator.instantiate(Instantiators.java:155) ~[grapht-0.11.0-BETA2.jar:na]
+	at org.grouplens.grapht.Instantiators$MemoizingInstantiator.instantiate(Instantiators.java:184) ~[grapht-0.11.0-BETA2.jar:na]
+	at org.lenskit.inject.NodeInstantiator$DefaultImpl.instantiate(NodeInstantiator.java:91) ~[lenskit-core-3.0-M1.jar:na]
+	at org.lenskit.inject.NodeInstantiator.apply(NodeInstantiator.java:70) ~[lenskit-core-3.0-M1.jar:na]
+	... 10 common frames omitted
+Caused by: java.lang.IllegalArgumentException: no score found for x=1, y=2
+	at org.lenskit.mooc.nonpers.assoc.AssociationModel.<init>(AssociationModel.java:50) ~[main/:na]
+	at org.lenskit.mooc.nonpers.assoc.BasicAssociationModelProvider.get(BasicAssociationModelProvider.java:80) ~[main/:na]
+	at org.lenskit.mooc.nonpers.assoc.BasicAssociationModelProvider.get(BasicAssociationModelProvider.java:19) ~[main/:na]
+	at org.grouplens.grapht.Instantiators$ProviderInstantiator.instantiate(Instantiators.java:153) ~[grapht-0.11.0-BETA2.jar:na]
+	... 13 common frames omitted

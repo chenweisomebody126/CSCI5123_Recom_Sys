@@ -82,7 +82,7 @@ public class DampedItemMeanModelProvider implements Provider<ItemMeanModel> {
                 globalCount += 1;
             }
         } catch (Exception e) {
-            logger.error("error in query");
+            logger.info("error in query dao and loop through it");
 //            throw UnsupportedOperationException e;
         }
         logger.info("get global sum {}", globalSum);

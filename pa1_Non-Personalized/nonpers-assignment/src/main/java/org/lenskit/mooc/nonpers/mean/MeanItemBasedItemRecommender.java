@@ -12,9 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An item scorer that scores each item with its mean rating.
@@ -82,8 +80,44 @@ public class MeanItemBasedItemRecommender extends AbstractItemBasedItemRecommend
      * @param items The items to score.
      * @return A {@link ResultMap} containing the scores.
      */
+
+
     private ResultList recommendItems(int n, LongSet items) {
         List<Result> results = new ArrayList<>();
+        PriorityQueue<Result> pq = new PriorityQueue<>(new Comparator<Result>() {
+            @Override
+            public int compare(Result o1, Result o2) {
+                if (o1.getScore() < o2.getScore() ){
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
+        });
+
+        for(long item : items){
+            double rating = this.model.getMeanRating(item);
+            if (pq.size() <  n) {
+                pq.offer(Results.create(item, rating));
+            } else {
+                if (pq.peek().getScore() < rating) {
+//                    logger.info("get item, rating, min, {}, {}, {}", item, rating, pq.peek().getScore());
+
+                    pq.poll();
+                    pq.offer(Results.create(item, rating));
+                }
+            }
+        }
+
+
+        while(!pq.isEmpty()){
+            Result r =pq.poll();
+            results.add(r);
+        }
+
+        Collections.reverse(results);
+
+        logger.info("get means {}", results);
 
         // TODO Find the top N items by mean rating
 

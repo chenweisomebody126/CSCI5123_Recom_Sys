@@ -1,47 +1,48 @@
-20:24:57.269 INFO [main] org.lenskit.cli.Main: Starting LensKit 3.0-M1 on Java 1.8.0_131 from Oracle Corporation
-20:24:57.304 DEBUG [main] org.lenskit.LenskitInfo: have 5573 active revisions
-20:24:57.311 DEBUG [main] org.lenskit.cli.Main: Built from Git revision c0210fa3281ef8b15b0959bcd5fced43c5fec38a
-20:24:57.311 DEBUG [main] org.lenskit.cli.Main: Using VM 'Java HotSpot(TM) 64-Bit Server VM' version 25.131-b11 from Oracle Corporation
-20:24:57.312 INFO [main] org.lenskit.cli.Main: Have 8 processors and heap limit of 3641 MiB
-20:24:57.338 INFO [main] org.lenskit.cli.util.RecommenderLoader: creating fresh recommender
-20:24:57.896 INFO [main] org.lenskit.config.ConfigurationLoader: loading script from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/etc/damped-mean.groovy
-20:24:58.951 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source ratings with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
-20:24:58.951 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/ratings.csv
-20:24:58.975 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source ratings to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/ratings.csv
-20:24:58.984 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: using delimiter ,
-20:24:58.985 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading header
-20:24:58.985 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading entities of type EntityType[rating]
-20:24:59.053 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.ratings.RatingBuilder: using entity builder {}
-20:24:59.053 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source movies with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
-20:24:59.053 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movies.csv
-20:24:59.053 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source movies to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movies.csv
-20:24:59.054 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: using delimiter ,
-20:24:59.054 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading header
-20:24:59.054 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading entities of type EntityType[item]
-20:24:59.055 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
-20:24:59.055 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source tags with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
-20:24:59.055 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/tags.csv
-20:24:59.055 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source tags to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/tags.csv
-20:24:59.055 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: using delimiter ,
-20:24:59.055 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading header
-20:24:59.056 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading entities of type EntityType[item-tag]
-20:24:59.056 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
-20:24:59.062 DEBUG [main] org.lenskit.LenskitRecommenderEngineBuilder: building graph from 3 configurations
-20:24:59.158 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: replacing nodes in graph with 10 nodes
-20:24:59.169 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: found 6 shared nodes
-20:25:00.881 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[user] from EntityType[rating] (column TypedName[user: long])
-20:25:01.053 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[item] from EntityType[rating] (column TypedName[item: long])
-20:25:01.248 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 2500 entities with type EntityType[item] and 2 indexes
-20:25:01.297 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 264505 entities with type EntityType[rating] and 2 indexes
-20:25:01.321 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 94875 entities with type EntityType[item-tag] and 2 indexes
-20:25:01.323 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 862 entities with type EntityType[user] and 2 indexes
-20:25:01.537 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: get global sum 926842.0
-20:25:01.586 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: get means 4.2521421779516055
-20:25:01.587 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: get means 4.226908822295371
-20:25:01.588 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: computed mean ratings for 2500 items
-20:25:01.615 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: final graph has 10 nodes
-20:25:01.619 INFO [main] org.lenskit.cli.util.RecommenderLoader: built recommender in 2.556 s
-20:25:01.626 INFO [main] org.lenskit.cli.commands.GlobalRecommend: using 0 reference items: []
-20:25:01.627 INFO [main] org.lenskit.mooc.nonpers.mean.MeanItemBasedItemRecommender: computing 10 recommendations from 2500 items
-20:25:01.631 INFO [main] org.lenskit.cli.commands.GlobalRecommend: recommended in 4.860 ms
-20:25:01.632 INFO [main] org.lenskit.cli.Main: If you use LensKit in published research, please see http://lenskit.org/research/
+23:11:51.785 INFO [main] org.lenskit.cli.Main: Starting LensKit 3.0-M1 on Java 1.8.0_131 from Oracle Corporation
+23:11:51.841 DEBUG [main] org.lenskit.LenskitInfo: have 5573 active revisions
+23:11:51.848 DEBUG [main] org.lenskit.cli.Main: Built from Git revision c0210fa3281ef8b15b0959bcd5fced43c5fec38a
+23:11:51.849 DEBUG [main] org.lenskit.cli.Main: Using VM 'Java HotSpot(TM) 64-Bit Server VM' version 25.131-b11 from Oracle Corporation
+23:11:51.849 INFO [main] org.lenskit.cli.Main: Have 8 processors and heap limit of 3641 MiB
+23:11:51.887 INFO [main] org.lenskit.cli.util.RecommenderLoader: creating fresh recommender
+23:11:52.441 INFO [main] org.lenskit.config.ConfigurationLoader: loading script from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/etc/damped-mean.groovy
+23:11:53.430 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source ratings with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
+23:11:53.430 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/ratings.csv
+23:11:53.452 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source ratings to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/ratings.csv
+23:11:53.459 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: using delimiter ,
+23:11:53.459 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading header
+23:11:53.459 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading entities of type EntityType[rating]
+23:11:53.547 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.ratings.RatingBuilder: using entity builder {}
+23:11:53.548 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source movies with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
+23:11:53.548 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movies.csv
+23:11:53.548 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source movies to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movies.csv
+23:11:53.548 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: using delimiter ,
+23:11:53.548 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading header
+23:11:53.548 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading entities of type EntityType[item]
+23:11:53.549 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
+23:11:53.549 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source tags with base URI file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/movielens.yml
+23:11:53.549 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/tags.csv
+23:11:53.549 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source tags to read from file:/Users/macbook/Documents/csci5123/pa1/nonpers-assignment/data/tags.csv
+23:11:53.549 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: using delimiter ,
+23:11:53.549 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading header
+23:11:53.549 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading entities of type EntityType[item-tag]
+23:11:53.550 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
+23:11:53.554 DEBUG [main] org.lenskit.LenskitRecommenderEngineBuilder: building graph from 3 configurations
+23:11:53.697 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: replacing nodes in graph with 10 nodes
+23:11:53.704 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: found 6 shared nodes
+23:11:56.250 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[user] from EntityType[rating] (column TypedName[user: long])
+23:11:56.448 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[item] from EntityType[rating] (column TypedName[item: long])
+23:11:56.547 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 2500 entities with type EntityType[item] and 2 indexes
+23:11:56.591 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 264505 entities with type EntityType[rating] and 2 indexes
+23:11:56.623 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 94875 entities with type EntityType[item-tag] and 2 indexes
+23:11:56.624 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 862 entities with type EntityType[user] and 2 indexes
+23:11:56.867 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: get global sum 926842.0
+23:11:56.899 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: get means 4.2521421779516055
+23:11:56.899 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: get means 4.226908822295371
+23:11:56.899 INFO [main] org.lenskit.mooc.nonpers.mean.DampedItemMeanModelProvider: computed mean ratings for 2500 items
+23:11:56.916 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: final graph has 10 nodes
+23:11:56.921 INFO [main] org.lenskit.cli.util.RecommenderLoader: built recommender in 3.367 s
+23:11:56.925 INFO [main] org.lenskit.cli.commands.GlobalRecommend: using 0 reference items: []
+23:11:56.926 INFO [main] org.lenskit.mooc.nonpers.mean.MeanItemBasedItemRecommender: computing 10 recommendations from 2500 items
+23:11:56.938 INFO [main] org.lenskit.mooc.nonpers.mean.MeanItemBasedItemRecommender: get means [BasicResult{id=318, score=4.356801953471533}, BasicResult{id=858, score=4.306888104912367}, BasicResult{id=2959, score=4.2521421779516055}, BasicResult{id=1203, score=4.226908822295371}, BasicResult{id=296, score=4.2120069765781585}, BasicResult{id=7502, score=4.21098344632649}, BasicResult{id=1221, score=4.207637307652431}, BasicResult{id=1248, score=4.195259517377999}, BasicResult{id=2571, score=4.1902233455056495}, BasicResult{id=4226, score=4.187541621978078}]
+23:11:56.948 INFO [main] org.lenskit.cli.commands.GlobalRecommend: recommended in 22.48 ms
+23:11:56.949 INFO [main] org.lenskit.cli.Main: If you use LensKit in published research, please see http://lenskit.org/research/
