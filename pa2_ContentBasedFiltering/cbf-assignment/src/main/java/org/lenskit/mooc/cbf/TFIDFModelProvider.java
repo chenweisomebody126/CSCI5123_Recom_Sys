@@ -13,6 +13,8 @@ import javax.inject.Provider;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Math.sqrt;
+
 /**
  * Builder for computing {@linkplain TFIDFModel TF-IDF models} from item tag data.  Each item is
  * represented by a normalized TF-IDF vector.
@@ -93,10 +95,22 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
             Map<String, Double> tv = new HashMap<>(entry.getValue());
 
             // TODO Convert this vector to a TF-IDF vector
+            Double euc_norm = 0.;
+            for (Map.Entry<String, Double> tf_vec: entry.getValue().entrySet()){
+                String tag = tf_vec.getKey();
+                Double tf_idf = tf_vec.getValue() * docFreq.get(tag);
+                tv.put(tag, tf_idf);
+                euc_norm += tf_idf * tf_idf;
+            }
+
             // TODO Normalize the TF-IDF vector to be a unit vector
             // Normalize it by dividing each element by its Euclidean norm, which is the
             // square root of the sum of the squares of the values.
-
+            euc_norm = sqrt(euc_norm);
+            for (Map.Entry<String, Double> tf_idf_vec: tv.entrySet()){
+                tf_idf_vec.setValue(tf_idf_vec.getValue() / euc_norm);
+            }
+            //Long item = entry.getKey();
             modelData.put(entry.getKey(), tv);
         }
 
