@@ -96,10 +96,10 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
 
             // TODO Convert this vector to a TF-IDF vector
             Double euc_norm = 0.;
-            for (Map.Entry<String, Double> tf_vec: entry.getValue().entrySet()){
+            for (Map.Entry<String, Double> tf_vec: tv.entrySet()){
                 String tag = tf_vec.getKey();
                 Double tf_idf = tf_vec.getValue() * docFreq.get(tag);
-                tv.put(tag, tf_idf);
+                tf_vec.setValue(tf_idf);
                 euc_norm += tf_idf * tf_idf;
             }
 
