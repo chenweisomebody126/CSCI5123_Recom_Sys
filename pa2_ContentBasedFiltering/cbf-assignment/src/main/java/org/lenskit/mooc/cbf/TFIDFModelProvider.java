@@ -64,7 +64,12 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
                                             .get()) {
                 String tag = tagApplication.get(TagData.TAG);
                 // TODO Count this tag application in the term frequency vector
-                // TODO Also count it in the document frequencey vector when needed
+                work.put(tag, 1.);
+                // TODO Also count it in the document frequency vector when needed
+                if (!docFreq.containsKey(tag)){
+                    docFreq.put(tag, 0.);
+                }
+                docFreq.put(tag, docFreq.get(tag) + 1.);
             }
 
             itemVectors.put(item, work);
