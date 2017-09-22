@@ -117,6 +117,7 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
             //Long item = entry.getKey();
             modelData.put(entry.getKey(), tv);
         }
+        logger.info("Item 2231 has the following final term vector: {}", modelData.get(2231));
 
         // We don't need the IDF vector anymore, as long as as we have no new tags
         return new TFIDFModel(modelData);

@@ -95,9 +95,9 @@ public class TFIDFItemScorer extends AbstractItemScorer {
             }
             itemNorm = sqrt(itemNorm);
             Double cos = score / userNorm / itemNorm;
-            Results.create(item, cos);
-            
-            throw new UnsupportedOperationException("stub implementation");
+            results.add(Results.create(item, cos));
+
+            //throw new UnsupportedOperationException("stub implementation");
         }
 
         return Results.newResultMap(results);
