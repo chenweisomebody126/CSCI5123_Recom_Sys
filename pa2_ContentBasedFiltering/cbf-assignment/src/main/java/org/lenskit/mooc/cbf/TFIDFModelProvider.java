@@ -98,18 +98,22 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
             Double euc_norm = 0.;
             for (Map.Entry<String, Double> tf_vec: tv.entrySet()){
                 String tag = tf_vec.getKey();
-                Double tf_idf = tf_vec.getValue() * docFreq.get(tag);
-                tf_vec.setValue(tf_idf);
-                euc_norm += tf_idf * tf_idf;
+                if(docFreq.containsKey(tag)){
+                    Double tf_idf = tf_vec.getValue() * docFreq.get(tag);
+                    tf_vec.setValue(tf_idf);
+                    euc_norm += tf_idf * tf_idf;
+                }
             }
 
             // TODO Normalize the TF-IDF vector to be a unit vector
             // Normalize it by dividing each element by its Euclidean norm, which is the
             // square root of the sum of the squares of the values.
-            euc_norm = sqrt(euc_norm);
-            for (Map.Entry<String, Double> tf_idf_vec: tv.entrySet()){
-                tf_idf_vec.setValue(tf_idf_vec.getValue() / euc_norm);
+            if (euc_norm!=0.){
+                euc_norm = sqrt(euc_norm);
+                for (Map.Entry<String, Double> tf_idf_vec: tv.entrySet())
+                    tf_idf_vec.setValue(tf_idf_vec.getValue() / euc_norm);
             }
+
             //Long item = entry.getKey();
             modelData.put(entry.getKey(), tv);
         }

@@ -46,7 +46,7 @@ public class ThresholdUserProfileBuilder implements UserProfileBuilder {
                     }
                     profile.put(tag, profile.get(tag) + tag_vec.getValue());
                 }
-                
+
             }
         }
 

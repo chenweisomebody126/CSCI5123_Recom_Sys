@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.sqrt;
+
 /**
  * @author <a href="http://www.grouplens.org">GroupLens Research</a>
  */
@@ -64,13 +66,37 @@ public class TFIDFItemScorer extends AbstractItemScorer {
         // Get the user's profile, which is a vector with their 'like' for each tag
         Map<String, Double> userVector = profileBuilder.makeUserProfile(ratings);
 
+        //calculate the norm of userVector
+        Double userNorm = 0.;
+        for (Double u: userVector.values()){
+            userNorm += u*u;
+        }
+        userNorm = sqrt(userNorm);
+
         for (Long item: items) {
             Map<String, Double> iv = model.getItemVector(item);
 
             // TODO Compute the cosine of this item and the user's profile, store it in the output list
             // TODO And remove this exception to say you've implemented it
             // If the denominator of the cosine similarity is 0, skip the item
-
+            Double score = 0.;
+            for (Map.Entry<String, Double> iv_e: iv.entrySet()){
+                if (userVector.containsKey(iv_e)){
+                    //dot product of userVector and itemVector
+                    score += iv_e.getValue() * userVector.get(iv_e.getKey());
+                }
+            }
+            if (score ==0.){
+                continue;
+            }
+            Double itemNorm = 0.;
+            for (Double i : iv.values()){
+                itemNorm += i*i;
+            }
+            itemNorm = sqrt(itemNorm);
+            Double cos = score / userNorm / itemNorm;
+            Results.create(item, cos);
+            
             throw new UnsupportedOperationException("stub implementation");
         }
 
