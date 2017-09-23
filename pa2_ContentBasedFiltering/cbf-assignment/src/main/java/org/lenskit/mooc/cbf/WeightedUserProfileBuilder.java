@@ -28,8 +28,28 @@ public class WeightedUserProfileBuilder implements UserProfileBuilder {
         Map<String,Double> profile = new HashMap<>();
 
         // TODO Normalize the user's ratings
-        // TODO Build the user's weighted profile
+        // Iterate over the user's ratings to normalize the ratings and build their profile
+        if (ratings.isEmpty()){
+            return profile;
+        }
+        Double mu = 0.;
+        for (Rating r : ratings) {
+            mu += r.getValue();
+        }
+        mu /= ratings.size();
 
+        // TODO Build the user's weighted profile
+        for (Rating r : ratings) {
+            Long itemId = r.getItemId();
+            Map<String, Double> itemVector = this.model.getItemVector(itemId);
+            for (Map.Entry<String, Double> tag_vec : itemVector.entrySet()){
+                String tag = tag_vec.getKey();
+                if (!profile.containsKey(tag)){
+                    profile.put(tag, 0.);
+                }
+                profile.put(tag, profile.get(tag) + tag_vec.getValue() * (r.getValue() - mu));
+            }
+        }
 
         // The profile is accumulated, return it.
         return profile;
