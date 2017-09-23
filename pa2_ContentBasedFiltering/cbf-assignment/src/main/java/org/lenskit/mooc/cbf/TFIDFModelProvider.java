@@ -112,11 +112,6 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
                     euc_norm += tf_idf * tf_idf;
                 }
             }
-            if (entry.getKey() == 2231){
-                logger.info("Item 2231 has the following  term vector: {}", tv);
-                logger.info("Item 2231 has the norm: {}", euc_norm);
-
-            }
 
             // TODO Normalize the TF-IDF vector to be a unit vector
             // Normalize it by dividing each element by its Euclidean norm, which is the
@@ -127,15 +122,11 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
                     tf_idf_vec.setValue(tf_idf_vec.getValue() / euc_norm);
                 }
             }
-            if (entry.getKey() == 2231){
-                logger.info("Item 2231 has the following  term vector: {}", tv);
-                logger.info("Item 2231 has the norm: {}", euc_norm);
 
-            }
             //Long item = entry.getKey();
             modelData.put(entry.getKey(), tv);
         }
-        //logger.info("Item 2231 has the following final term vector: {}", modelData.get((long)2231));
+        logger.info("Item 2231 has the following final term vector: {}", modelData.get((long)2231));
 
         // We don't need the IDF vector anymore, as long as as we have no new tags
         return new TFIDFModel(modelData);

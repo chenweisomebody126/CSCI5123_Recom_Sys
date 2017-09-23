@@ -7,6 +7,8 @@ import org.lenskit.data.dao.DataAccessObject;
 import org.lenskit.data.entities.CommonAttributes;
 import org.lenskit.data.ratings.Rating;
 import org.lenskit.results.Results;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -24,6 +26,7 @@ public class TFIDFItemScorer extends AbstractItemScorer {
     private final DataAccessObject dao;
     private final TFIDFModel model;
     private final UserProfileBuilder profileBuilder;
+    private static final Logger logger = LoggerFactory.getLogger(TFIDFModelProvider.class);
 
     /**
      * Construct a new item scorer.  LensKit's dependency injector will call this constructor and
@@ -76,12 +79,15 @@ public class TFIDFItemScorer extends AbstractItemScorer {
         for (Long item: items) {
             Map<String, Double> iv = model.getItemVector(item);
 
+            if (iv.isEmpty()){
+                continue;
+            }
             // TODO Compute the cosine of this item and the user's profile, store it in the output list
             // TODO And remove this exception to say you've implemented it
             // If the denominator of the cosine similarity is 0, skip the item
             Double score = 0.;
             for (Map.Entry<String, Double> iv_e: iv.entrySet()){
-                if (userVector.containsKey(iv_e)){
+                if (userVector.containsKey(iv_e.getKey())){
                     //dot product of userVector and itemVector
                     score += iv_e.getValue() * userVector.get(iv_e.getKey());
                 }
