@@ -66,18 +66,25 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
                                             .get()) {
                 String tag = tagApplication.get(TagData.TAG);
                 // TODO Count this tag application in the term frequency vector
-                work.put(tag, 1.);
+                if (!work.containsKey(tag)) {
+                    work.put(tag, 0.);
+                }
+                work.put(tag, work.get(tag) + 1.);
+            }
+
                 // TODO Also count it in the document frequency vector when needed
-                if (!docFreq.containsKey(tag)){
+            for (Map.Entry<String, Double> w: work.entrySet()){
+                String tag = w.getKey();
+                if(!docFreq.containsKey(tag)){
                     docFreq.put(tag, 0.);
                 }
-                docFreq.put(tag, docFreq.get(tag) + 1.);
+                docFreq.put(tag, docFreq.get(tag) +1.);
             }
 
             itemVectors.put(item, work);
+
         }
 
-        logger.info("Computed TF vectors for {} items", itemVectors.size());
 
         // Now we've seen all the items, so we have each item's TF vector and a global vector
         // of document frequencies.
@@ -86,6 +93,7 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
         for (Map.Entry<String, Double> e : docFreq.entrySet()) {
             e.setValue(logN - Math.log(e.getValue()));
         }
+        logger.info("Computed docFreq vectors for {} items", docFreq.size());
 
         // Now docFreq is a log-IDF vector.  Its values can therefore be multiplied by TF values.
         // So we can use it to apply IDF to each item vector to put it in the final model.
@@ -104,20 +112,30 @@ public class TFIDFModelProvider implements Provider<TFIDFModel> {
                     euc_norm += tf_idf * tf_idf;
                 }
             }
+            if (entry.getKey() == 2231){
+                logger.info("Item 2231 has the following  term vector: {}", tv);
+                logger.info("Item 2231 has the norm: {}", euc_norm);
+
+            }
 
             // TODO Normalize the TF-IDF vector to be a unit vector
             // Normalize it by dividing each element by its Euclidean norm, which is the
             // square root of the sum of the squares of the values.
             if (euc_norm!=0.){
                 euc_norm = sqrt(euc_norm);
-                for (Map.Entry<String, Double> tf_idf_vec: tv.entrySet())
+                for (Map.Entry<String, Double> tf_idf_vec: tv.entrySet()){
                     tf_idf_vec.setValue(tf_idf_vec.getValue() / euc_norm);
+                }
             }
+            if (entry.getKey() == 2231){
+                logger.info("Item 2231 has the following  term vector: {}", tv);
+                logger.info("Item 2231 has the norm: {}", euc_norm);
 
+            }
             //Long item = entry.getKey();
             modelData.put(entry.getKey(), tv);
         }
-        logger.info("Item 2231 has the following final term vector: {}", modelData.get(2231));
+        //logger.info("Item 2231 has the following final term vector: {}", modelData.get((long)2231));
 
         // We don't need the IDF vector anymore, as long as as we have no new tags
         return new TFIDFModel(modelData);
