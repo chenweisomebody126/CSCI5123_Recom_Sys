@@ -74,6 +74,17 @@ public class SimpleUserUserItemScorer extends AbstractItemScorer {
             for (long item: items){
                 if (!r_v.containsKey(item)) continue;
                 //calculate the cos similarity
+                Long2DoubleOpenHashMap mean_centered_r_v = subtracting_mean_rating(r_v);
+                double dotProd = Vectors.dotProduct(mean_centered_r_u, mean_centered_r_v);
+                if (dotProd <0) continue;
+                double norm_u = Vectors.euclideanNorm(mean_centered_r_u);
+                double norm_v = Vectors.euclideanNorm(mean_centered_r_v);
+                double cos_u_v = 0.;
+                if (norm_u != 0 && norm_v!=0){
+                    cos_u_v = dotProd / norm_u / norm_v;
+                }
+                //put cos value and associated userId into the heap if larger than the root
+
                 double mean_r_v = Vectors.mean(r_v);
 
                 cos.get(item).
