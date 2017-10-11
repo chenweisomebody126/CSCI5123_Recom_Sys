@@ -1,9 +1,11 @@
 package org.lenskit.mooc.uu;
 
-import it.unimi.dsi.fastutil.doubles.DoubleHeaps;
+import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.longs.Long2DoubleMap;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
+import it.unimi.dsi.fastutil.longs.Long2DoubleSortedMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
+import org.apache.commons.math3.geometry.euclidean.oned.Vector1D;
 import org.lenskit.api.Result;
 import org.lenskit.api.ResultMap;
 import org.lenskit.basic.AbstractItemScorer;
@@ -11,9 +13,16 @@ import org.lenskit.data.dao.DataAccessObject;
 import org.lenskit.data.entities.CommonAttributes;
 import org.lenskit.data.entities.CommonTypes;
 import org.lenskit.data.ratings.Rating;
+import org.lenskit.results.BasicResultMap;
+import org.lenskit.results.Results;
+import org.lenskit.util.ScoredIdAccumulator;
+import org.lenskit.util.TopNScoredIdAccumulator;
+import org.lenskit.util.collections.LongUtils;
+import org.lenskit.util.math.Scalars;
 import org.lenskit.util.math.Vectors;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.*;
 
@@ -39,70 +48,153 @@ public class SimpleUserUserItemScorer extends AbstractItemScorer {
     @Override
     public ResultMap scoreWithDetails(long user, @Nonnull Collection<Long> items) {
         // TODO Score the items for the user with user-user CF
-        //retrieve the rating vector of input user and subtract its mean
-        Long2DoubleOpenHashMap r_u = getUserRatingVector(user);
-        Long2DoubleOpenHashMap mean_centered_r_u = subtracting_mean_rating(r_u);
-        double mean_r_u = Vectors.mean(r_u);
+        double user_mean = 0.0;
+        Long2DoubleOpenHashMap user_ratings = getUserRatingVector(user);
+        for (Map.Entry<Long,Double> val : user_ratings.entrySet()) {
+            user_mean += val.getValue();
+        }
+        user_mean /= user_ratings.size();
+        double user_norm = 0.0;
+        for (Map.Entry<Long,Double> r : user_ratings.entrySet()) {
+            user_norm += r.getValue() * r.getValue();
+        }
+        user_norm = Math.sqrt(user_norm);
 
+        /* calculate all cosines */
+        LongSet all_ids = dao.getEntityIds(CommonTypes.USER);
+        HashMap<Long,Double> cosines = new HashMap<>();
+        for (long id : all_ids) {
+            if (user != id) {
+                Long2DoubleOpenHashMap neighbor_ratings = getUserRatingVector(id);
+                double product = 0.0;
+                double norm1 = 0.0;
+                for (Map.Entry<Long,Double> r : neighbor_ratings.entrySet()) {
+                    if (user_ratings.containsKey(r.getKey())) {
+                        long iid = r.getKey();
+                        product += r.getValue() * user_ratings.get(iid);
+                    }
+                    else { product += 0.0; }
+                    norm1 += r.getValue() * r.getValue();
+                }
+                norm1 = Math.sqrt(norm1);
+                cosines.put(id,product/norm1/user_norm);
+            }
+        }
 
-        //iterate over all users except itself to calculate each user's mean-centered rating vectors
-        LongSet users = dao.getEntityIds(CommonTypes.USER);
+        /* sort all cosines in descending order */
+        LinkedHashMap<Long,Double> sorted_cosines = new LinkedHashMap<>();
+        while (!cosines.isEmpty()) {
+            double cos_val = -2.0;
+            long id = 0;
+            for (Map.Entry<Long,Double> r : cosines.entrySet()) {
+                if (r.getValue() > cos_val) {
+                    cos_val = r.getValue();
+                    id = r.getKey();
+                }
+            }
+            sorted_cosines.put(id, cos_val);
+            cosines.remove(id);
+        }
 
-        Long2DoubleOpenHashMap mean_centered_ratings = new Long2DoubleOpenHashMap();
-        Long2DoubleOpenHashMap users_mean_ratings = new Long2DoubleOpenHashMap();
+        /* create top 30 cosines for each item */
+        LinkedHashMap<Long,LinkedHashMap<Long,Double>> top30cosines = new LinkedHashMap<>();
+        for (long item : items) {
+            LinkedHashMap<Long,Double> topcosines = new LinkedHashMap<>();
+            for (Map.Entry<Long,Double> r : sorted_cosines.entrySet()) {
+                if (topcosines.size() == neighborhoodSize) {
+                    top30cosines.put(item, topcosines);
+                    break;
+                }
+                if (getUserRatingVector(r.getKey()).containsKey(item)) {
+                    if (r.getValue() <= 0) {
+                        break;
+                    }
+                    topcosines.put(r.getKey(),r.getValue());
+                }
+            }
+            if (topcosines.size() < neighborhoodSize && topcosines.size() > 1) {
+                top30cosines.put(item, topcosines);
+            }
+        }
 
-        //initialize a heap for each item to get top N cos similarities
-        HashMap<Long, PriorityQueue<Result>> cos =  new HashMap<>();
-        for (long itemId: items){
-            PriorityQueue<Result> pq = new PriorityQueue<>(new Comparator<Result>() {
-                @Override
-                public int compare(Result o1, Result o2) {
-                    if (o1.getScore() < o2.getScore() ){
-                        return -1;
-                    } else {
-                        return 1;
+        /* compute the summed norm for each top30cosine  */
+        LinkedHashMap<Long,Double> top30norms = new LinkedHashMap<>();
+        for (Map.Entry<Long,LinkedHashMap<Long,Double>> r1 : top30cosines.entrySet()) {
+            double cos_norm = 0.0;
+            for (Map.Entry<Long,Double> r2 : r1.getValue().entrySet()) {
+                cos_norm += Math.abs(r2.getValue());
+            }
+            top30norms.put(r1.getKey(),cos_norm);
+        }
+
+        /* compute the fluctuation over user v */
+        LinkedHashMap<Long,LinkedHashMap<Long,Double>> fluctuation = new LinkedHashMap<>();
+        for (Map.Entry<Long,LinkedHashMap<Long,Double>> r1 : top30cosines.entrySet()) {
+            LinkedHashMap<Long,Double> fluct = new LinkedHashMap<>();
+            for (Map.Entry<Long,Double> r2 : r1.getValue().entrySet()) {
+                double v_mean = 0.0;
+                Long2DoubleOpenHashMap v_ratings = getUserRatingVector(r2.getKey());
+                for (Map.Entry<Long,Double> val : v_ratings.entrySet()) {
+                    v_mean += val.getValue();
+                }
+                v_mean /= v_ratings.size();
+
+                for (Map.Entry<Long,Double> val : v_ratings.entrySet()) {
+                    if (val.getKey().equals(r1.getKey())) {
+                        double fluct_val = val.getValue() - v_mean;
+                        fluct.put(r2.getKey(),fluct_val);
                     }
                 }
-            });
 
-            cos.put(itemId, pq);
+            }
+            fluctuation.put(r1.getKey(), fluct);
         }
 
-        for (long user_each : users) {
-            if (user_each == user) continue;
-            Long2DoubleOpenHashMap r_v = getUserRatingVector(user_each);
-            for (long item: items){
-                if (!r_v.containsKey(item)) continue;
-                //calculate the cos similarity
-                Long2DoubleOpenHashMap mean_centered_r_v = subtracting_mean_rating(r_v);
-                double dotProd = Vectors.dotProduct(mean_centered_r_u, mean_centered_r_v);
-                if (dotProd <0) continue;
-                double norm_u = Vectors.euclideanNorm(mean_centered_r_u);
-                double norm_v = Vectors.euclideanNorm(mean_centered_r_v);
-                double cos_u_v = 0.;
-                if (norm_u != 0 && norm_v!=0){
-                    cos_u_v = dotProd / norm_u / norm_v;
+
+        /* compute summed weighted varies (numerator) for each item */
+        List<Result> iScore = new ArrayList<>();
+        for (Map.Entry<Long,LinkedHashMap<Long,Double>> r1 : top30cosines.entrySet()) {
+            LinkedHashMap<Long,Double> varies = new LinkedHashMap<>();
+            double summed_varies = 0.0;
+            for (Map.Entry<Long,Double> r2 : r1.getValue().entrySet()) {
+                varies.put(r2.getKey(), r2.getValue() * fluctuation.get(r1.getKey()).get(r2.getKey()));
+            }
+
+            for (Map.Entry<Long,Double> r3 : varies.entrySet()) {
+                summed_varies += r3.getValue();
+            }
+
+            final long iid = r1.getKey();
+            final double rating = user_mean + summed_varies / top30norms.get(r1.getKey());
+            Result ires = new Result() {
+                @Override
+                public long getId() {
+                    return iid;
                 }
-                //put cos value and associated userId into the heap if larger than the root
 
-                double mean_r_v = Vectors.mean(r_v);
+                @Override
+                public double getScore() {
+                    return rating;
+                }
 
-                cos.get(item).
-            }
-            double mean_user = Vectors.mean(r_v);
+                @Override
+                public boolean hasScore() {
+                    return false;
+                }
 
-            addScalar(r_vec, mean_user*(-1.0));
-            mean_centered_ratings.put(r_vec.getItemId(), r_vec.getValue());
-            users_mean_ratings.put(user_each, mean_user);
+                @Nullable
+                @Override
+                public <T extends Result> T as(@Nonnull Class<T> type) {
+                    return null;
+                }
+            };
+            iScore.add(ires);
         }
-        //user Vectors class to calculate the cosine of mean-centered rating vectors after filtering who rated this item
-        for (Long item: items){
-            for (Long user_any: users){
-                if (user_any == user) continue;
-                if ()
-            }
-        }
-        throw new UnsupportedOperationException("not yet implemented");
+        ResultMap scores = Results.newResultMap(iScore);
+
+        return scores;
+
+//        throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -122,17 +214,6 @@ public class SimpleUserUserItemScorer extends AbstractItemScorer {
         }
 
         return ratings;
-    }
-
-    private Long2DoubleOpenHashMap subtracting_mean_rating(Long2DoubleOpenHashMap ratings_vec){
-        double mean_r_u = Vectors.mean(ratings_vec);
-        Long2DoubleOpenHashMap mean_centered_ratings_vec = new Long2DoubleOpenHashMap();
-        Iterator<Long2DoubleMap.Entry> iter = Vectors.fastEntryIterator(ratings_vec);
-        while (iter.hasNext()){
-            Long2DoubleMap.Entry itemId_rating = iter.next();
-            mean_centered_ratings_vec.put(itemId_rating.getLongKey(), itemId_rating.getDoubleValue() - mean_r_u);
-        }
-        return mean_centered_ratings_vec;
     }
 
 }
