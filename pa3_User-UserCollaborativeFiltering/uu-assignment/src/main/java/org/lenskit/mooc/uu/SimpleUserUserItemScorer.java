@@ -48,17 +48,16 @@ public class SimpleUserUserItemScorer extends AbstractItemScorer {
     @Override
     public ResultMap scoreWithDetails(long user, @Nonnull Collection<Long> items) {
         // TODO Score the items for the user with user-user CF
-        double user_mean = 0.0;
+
         Long2DoubleOpenHashMap user_ratings = getUserRatingVector(user);
-        for (Map.Entry<Long,Double> val : user_ratings.entrySet()) {
-            user_mean += val.getValue();
-        }
-        user_mean /= user_ratings.size();
-        double user_norm = 0.0;
+        double user_mean = Vectors.mean(user_ratings);
         for (Map.Entry<Long,Double> r : user_ratings.entrySet()) {
-            user_norm += r.getValue() * r.getValue();
+            long u_key = r.getKey();
+            double standardize = r.getValue() - user_mean;
+            user_ratings.put(u_key, standardize);
         }
-        user_norm = Math.sqrt(user_norm);
+        double user_norm = Vectors.euclideanNorm(user_ratings);
+
 
         /* calculate all cosines */
         LongSet all_ids = dao.getEntityIds(CommonTypes.USER);
@@ -66,20 +65,19 @@ public class SimpleUserUserItemScorer extends AbstractItemScorer {
         for (long id : all_ids) {
             if (user != id) {
                 Long2DoubleOpenHashMap neighbor_ratings = getUserRatingVector(id);
-                double product = 0.0;
-                double norm1 = 0.0;
+
+                double neighbor_mean = Vectors.mean(neighbor_ratings);
                 for (Map.Entry<Long,Double> r : neighbor_ratings.entrySet()) {
-                    if (user_ratings.containsKey(r.getKey())) {
-                        long iid = r.getKey();
-                        product += r.getValue() * user_ratings.get(iid);
-                    }
-                    else { product += 0.0; }
-                    norm1 += r.getValue() * r.getValue();
+                    long neighbor_key = r.getKey();
+                    double standardize = r.getValue() - neighbor_mean;
+                    neighbor_ratings.put(neighbor_key, standardize);
                 }
-                norm1 = Math.sqrt(norm1);
+                double norm1 = Vectors.euclideanNorm(neighbor_ratings);
+                double product = Vectors.dotProduct(neighbor_ratings, user_ratings);
                 cosines.put(id,product/norm1/user_norm);
             }
         }
+
 
         /* sort all cosines in descending order */
         LinkedHashMap<Long,Double> sorted_cosines = new LinkedHashMap<>();
@@ -132,12 +130,8 @@ public class SimpleUserUserItemScorer extends AbstractItemScorer {
         for (Map.Entry<Long,LinkedHashMap<Long,Double>> r1 : top30cosines.entrySet()) {
             LinkedHashMap<Long,Double> fluct = new LinkedHashMap<>();
             for (Map.Entry<Long,Double> r2 : r1.getValue().entrySet()) {
-                double v_mean = 0.0;
                 Long2DoubleOpenHashMap v_ratings = getUserRatingVector(r2.getKey());
-                for (Map.Entry<Long,Double> val : v_ratings.entrySet()) {
-                    v_mean += val.getValue();
-                }
-                v_mean /= v_ratings.size();
+                double v_mean = Vectors.mean(v_ratings);
 
                 for (Map.Entry<Long,Double> val : v_ratings.entrySet()) {
                     if (val.getKey().equals(r1.getKey())) {
