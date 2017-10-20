@@ -9,15 +9,12 @@ import org.lenskit.data.dao.DataAccessObject;
 import org.lenskit.data.entities.CommonAttributes;
 import org.lenskit.data.ratings.Rating;
 import org.lenskit.results.Results;
-import org.lenskit.util.ScoredIdAccumulator;
-import org.lenskit.util.TopNScoredIdAccumulator;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author <a href="http://www.grouplens.org">GroupLens Research</a>
@@ -51,6 +48,7 @@ public class SimpleItemItemScorer extends AbstractItemScorer {
 
         for (long item: items ) {
             // TODO Compute the user's score for each item, add it to results
+
         }
 
         return Results.newResultMap(results);

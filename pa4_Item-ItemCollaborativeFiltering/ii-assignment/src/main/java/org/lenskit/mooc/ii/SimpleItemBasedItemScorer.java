@@ -1,5 +1,8 @@
 package org.lenskit.mooc.ii;
 
+import com.google.common.collect.Maps;
+import it.unimi.dsi.fastutil.longs.Long2DoubleMap;
+import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
 import org.lenskit.api.Result;
 import org.lenskit.api.ResultMap;
 import org.lenskit.basic.AbstractItemBasedItemScorer;
@@ -36,6 +39,15 @@ public class SimpleItemBasedItemScorer extends AbstractItemBasedItemScorer {
         List<Result> results = new ArrayList<>();
 
         // TODO Score the items and put them in results
+        Long2DoubleMap itemMeans = new Long2DoubleOpenHashMap();
+        itemMeans = this.model.getItemMeans();
+        
+
+
+        Map<Long,Long2DoubleMap> itemSimilarities = Maps.newHashMap();
+        itemSimilarities = this.model.getNeighbors();
+
+
 
         return Results.newResultMap(results);
     }
