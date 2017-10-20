@@ -3,7 +3,6 @@ package org.lenskit.mooc.ii;
 import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.longs.Long2DoubleMap;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
-import org.apache.commons.lang3.tuple.Pair;
 import org.lenskit.data.dao.DataAccessObject;
 import org.lenskit.data.entities.CommonAttributes;
 import org.lenskit.data.ratings.Rating;
@@ -72,6 +71,28 @@ public class SimpleItemItemModelProvider implements Provider<SimpleItemItemModel
         Map<Long,Long2DoubleMap> itemSimilarities = Maps.newHashMap();
 
         // TODO Compute the similarities between each pair of items
+        for (Map.Entry<Long, Long2DoubleMap> entry1: itemVectors.entrySet()){
+            Long2DoubleMap itemSimilarity = new Long2DoubleOpenHashMap();
+            Long item1 = entry1.getKey();
+            Long2DoubleMap vector1 = entry1.getValue();
+
+            for (Map.Entry<Long, Long2DoubleMap> entry2: itemVectors.entrySet()){
+                Long item2 = entry2.getKey();
+                Long2DoubleMap vector2 = entry1.getValue();
+                if (item1 == item2) continue;
+                double prod = Vectors.dotProduct(vector1, vector2);
+                if (prod <= 0) continue;
+                double norm1= Vectors.euclideanNorm(vector1);
+                double norm2 = Vectors.euclideanNorm(vector2);
+                double cos = 0.;
+                if (norm1 !=0. && norm2 != 0.){
+                    cos = prod / norm1/ norm2;
+                }
+                if (cos <= 0) continue;
+                itemSimilarity.put(item2, (Double) cos);
+            }
+            itemSimilarities.put(item1, itemSimilarity);
+        }
         // Ignore nonpositive similarities
 
         return new SimpleItemItemModel(LongUtils.frozenMap(itemMeans), itemSimilarities);
