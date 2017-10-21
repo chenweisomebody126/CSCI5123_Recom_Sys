@@ -61,6 +61,9 @@ public class SimpleItemItemScorer extends AbstractItemScorer {
             });
             // TODO Compute the neighbors with top N similarities
             Long2DoubleMap itemSimilairty = this.model.getNeighbors(item1);
+            for (Map.Entry<Long, Double> entry : itemSimilairty.entrySet()){
+
+            }
             for (Map.Entry<Long, Double> item2 : itemSimilairty.entrySet()){
                 Result result2 = Results.create(item2.getKey(), item2.getValue());
                 // only consider the item2 that is rated by current user
@@ -82,11 +85,12 @@ public class SimpleItemItemScorer extends AbstractItemScorer {
             //TODO calculate the weighted average
             double prod = Vectors.dotProduct(ratings, neighbors);
             double sumWeights = Vectors.sumAbs(neighbors);
-            double similarity1 = itemMeans.get(item1) + prod/ sumWeights;
-
+            double similarity1 = 0.;
+            if (itemMeans.containsKey(item1)){
+                similarity1 = itemMeans.get(item1) + prod/ sumWeights;
+            }
             results.add(Results.create(item1, similarity1));
         }
-
 
         return Results.newResultMap(results);
 

@@ -43,12 +43,12 @@ public class SimpleItemItemModelProvider implements Provider<SimpleItemItemModel
      */
     @Override
     public SimpleItemItemModel get() {
-        Map<Long,Long2DoubleMap> itemVectors = Maps.newHashMap();
+        Map<Long, Long2DoubleMap> itemVectors = Maps.newHashMap();
         Long2DoubleMap itemMeans = new Long2DoubleOpenHashMap();
 
         try (ObjectStream<IdBox<List<Rating>>> stream = dao.query(Rating.class)
-                                                           .groupBy(CommonAttributes.ITEM_ID)
-                                                           .stream()) {
+                .groupBy(CommonAttributes.ITEM_ID)
+                .stream()) {
             for (IdBox<List<Rating>> item : stream) {
                 long itemId = item.getId();
                 List<Rating> itemRatings = item.getValue();
@@ -68,33 +68,35 @@ public class SimpleItemItemModelProvider implements Provider<SimpleItemItemModel
         }
 
         // Map items to vectors (maps) of item similarities.
-        Map<Long,Long2DoubleMap> itemSimilarities = Maps.newHashMap();
+        Map<Long, Long2DoubleMap> itemSimilarities = Maps.newHashMap();
 
         // TODO Compute the similarities between each pair of items
-        for (Map.Entry<Long, Long2DoubleMap> entry1: itemVectors.entrySet()){
+        for (Map.Entry<Long, Long2DoubleMap> entry1 : itemVectors.entrySet()) {
             Long2DoubleMap itemSimilarity = new Long2DoubleOpenHashMap();
             Long item1 = entry1.getKey();
             Long2DoubleMap vector1 = entry1.getValue();
 
-            for (Map.Entry<Long, Long2DoubleMap> entry2: itemVectors.entrySet()){
+            for (Map.Entry<Long, Long2DoubleMap> entry2 : itemVectors.entrySet()) {
                 Long item2 = entry2.getKey();
-                Long2DoubleMap vector2 = entry1.getValue();
+                Long2DoubleMap vector2 = entry2.getValue();
                 if (item1 == item2) continue;
                 double prod = Vectors.dotProduct(vector1, vector2);
                 if (prod <= 0) continue;
-                double norm1= Vectors.euclideanNorm(vector1);
+                //logger.info("prod {}", prod);
+                double norm1 = Vectors.euclideanNorm(vector1);
                 double norm2 = Vectors.euclideanNorm(vector2);
                 double cos = 0.;
-                if (norm1 !=0. && norm2 != 0.){
-                    cos = prod / norm1/ norm2;
+                if (norm1 != 0. && norm2 != 0.) {
+                    cos = prod / norm1 / norm2;
                 }
                 if (cos <= 0) continue;
                 itemSimilarity.put(item2, (Double) cos);
+                //logger.info("item2 {}", item2);
+                //logger.info("get global sum {}", cos);            }
+                itemSimilarities.put(item1, itemSimilarity);
             }
-            itemSimilarities.put(item1, itemSimilarity);
+            // Ignore nonpositive similarities
         }
-        // Ignore nonpositive similarities
-
         return new SimpleItemItemModel(LongUtils.frozenMap(itemMeans), itemSimilarities);
     }
 }
