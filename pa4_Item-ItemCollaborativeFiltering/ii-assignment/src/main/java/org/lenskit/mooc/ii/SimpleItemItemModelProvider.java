@@ -75,6 +75,7 @@ public class SimpleItemItemModelProvider implements Provider<SimpleItemItemModel
             Long2DoubleMap itemSimilarity = new Long2DoubleOpenHashMap();
             Long item1 = entry1.getKey();
             Long2DoubleMap vector1 = entry1.getValue();
+            double norm1 = Vectors.euclideanNorm(vector1);
 
             for (Map.Entry<Long, Long2DoubleMap> entry2 : itemVectors.entrySet()) {
                 Long item2 = entry2.getKey();
@@ -83,7 +84,6 @@ public class SimpleItemItemModelProvider implements Provider<SimpleItemItemModel
                 double prod = Vectors.dotProduct(vector1, vector2);
                 if (prod <= 0) continue;
                 //logger.info("prod {}", prod);
-                double norm1 = Vectors.euclideanNorm(vector1);
                 double norm2 = Vectors.euclideanNorm(vector2);
                 double cos = 0.;
                 if (norm1 != 0. && norm2 != 0.) {
