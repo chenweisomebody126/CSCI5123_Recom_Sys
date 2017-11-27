@@ -36,11 +36,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SVDItemScorer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SVDItemScorer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDItemScorer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="47" column="28" lean-forward="true" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
+            <state relative-caret-position="778">
+              <caret line="80" column="9" lean-forward="false" selection-start-line="80" selection-start-column="9" selection-end-line="80" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -49,18 +49,18 @@
       <file leaf-file-name="SVDModel.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
+            <state relative-caret-position="-783">
               <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SVDModelBuilder.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SVDModelBuilder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDModelBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="665">
-              <caret line="91" column="44" lean-forward="true" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+            <state relative-caret-position="631">
+              <caret line="110" column="29" lean-forward="true" selection-start-line="110" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -69,8 +69,8 @@
       <file leaf-file-name="RealVector.java" pinned="false" current-in-tab="false">
         <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.6.1/8fab23986ea8886af34818daf32a718e81dc98ba/commons-math3-3.6.1-sources.jar!/org/apache/commons/math3/linear/RealVector.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="125" column="43" lean-forward="false" selection-start-line="125" selection-start-column="31" selection-end-line="125" selection-end-column="43" />
+            <state relative-caret-position="457">
+              <caret line="64" column="36" lean-forward="false" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -122,6 +122,7 @@
     <findStrings>
       <find>SVMItemScorer</find>
       <find>getSubMatrix</find>
+      <find>size</find>
       <find>createRatingMatrix</find>
     </findStrings>
   </component>
@@ -471,11 +472,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDModelBuilder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDItemScorer.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="149" />
+    <option name="x" value="289" />
     <option name="y" value="23" />
     <option name="width" value="1501" />
     <option name="height" value="1023" />
@@ -795,7 +797,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="149" y="23" width="1501" height="1023" extended-state="0" />
+    <frame x="289" y="23" width="1501" height="1023" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -847,14 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDItemScorer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="47" column="28" lean-forward="true" selection-start-line="47" selection-start-column="28" selection-end-line="47" selection-end-column="28" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.lenskit/lenskit-core/3.0-M2/d67f488478e3e2455705b82bb219bd81c7cd94cd/lenskit-core-3.0-M2-sources.jar!/org/lenskit/data/ratings/Rating.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
@@ -889,7 +883,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
+        <state relative-caret-position="-783">
           <caret line="17" column="13" lean-forward="false" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
           <folding />
         </state>
@@ -897,16 +891,24 @@
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-math3/3.6.1/8fab23986ea8886af34818daf32a718e81dc98ba/commons-math3-3.6.1-sources.jar!/org/apache/commons/math3/linear/RealVector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="125" column="43" lean-forward="false" selection-start-line="125" selection-start-column="31" selection-end-line="125" selection-end-column="43" />
+        <state relative-caret-position="457">
+          <caret line="64" column="36" lean-forward="false" selection-start-line="64" selection-start-column="24" selection-end-line="64" selection-end-column="36" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDModelBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="665">
-          <caret line="91" column="44" lean-forward="true" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+        <state relative-caret-position="631">
+          <caret line="110" column="29" lean-forward="true" selection-start-line="110" selection-start-column="0" selection-end-line="111" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/lenskit/mooc/svd/SVDItemScorer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="778">
+          <caret line="80" column="9" lean-forward="false" selection-start-line="80" selection-start-column="9" selection-end-line="80" selection-end-column="9" />
           <folding />
         </state>
       </provider>
