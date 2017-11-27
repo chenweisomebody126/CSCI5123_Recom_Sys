@@ -1,0 +1,50 @@
+23:41:27.308 INFO [main] org.lenskit.cli.Main: Starting LensKit 3.0-M2 on Java 1.8.0_131 from Oracle Corporation
+23:41:27.339 DEBUG [main] org.lenskit.LenskitInfo: have 5655 active revisions
+23:41:27.345 DEBUG [main] org.lenskit.cli.Main: Built from Git revision 0c68ad209f38816e66497a656f777a3c1484778d
+23:41:27.345 DEBUG [main] org.lenskit.cli.Main: Using VM 'Java HotSpot(TM) 64-Bit Server VM' version 25.131-b11 from Oracle Corporation
+23:41:27.345 INFO [main] org.lenskit.cli.Main: Have 8 processors and heap limit of 3641 MiB
+23:41:27.360 INFO [main] org.lenskit.cli.util.RecommenderLoader: creating fresh recommender
+23:41:27.643 INFO [main] org.lenskit.config.ConfigurationLoader: loading script from file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/etc/svd.groovy
+23:41:27.967 INFO [main] org.lenskit.config.ConfigurationLoader: loading script from file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/etc/item-bias.groovy
+23:41:28.125 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source ratings with base URI file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/movielens.yml
+23:41:28.125 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/ratings.csv
+23:41:28.132 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source ratings to read from file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/ratings.csv
+23:41:28.136 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: using delimiter ,
+23:41:28.136 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading header
+23:41:28.136 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: ratings: reading entities of type EntityType[rating]
+23:41:28.172 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.ratings.RatingBuilder: using entity builder {}
+23:41:28.172 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source movies with base URI file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/movielens.yml
+23:41:28.172 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/movies.csv
+23:41:28.172 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source movies to read from file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/movies.csv
+23:41:28.172 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: using delimiter ,
+23:41:28.172 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading header
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: movies: reading entities of type EntityType[item]
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: loading source tags with base URI file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/movielens.yml
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: resolved file URI: file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/tags.csv
+23:41:28.173 INFO [main] org.lenskit.data.dao.file.TextEntitySource: loading text file source tags to read from file:/Users/macbook/Documents/csci5123/CSCI5123_Recom_Sys/pa6_SVD_matrix_decomposition/svd-assignment/data/tags.csv
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: using delimiter ,
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading header
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: tags: reading entities of type EntityType[item-tag]
+23:41:28.173 DEBUG [main] org.lenskit.data.dao.file.TextEntitySource: class org.lenskit.data.entities.BasicEntityBuilder: using entity builder {}
+23:41:28.178 DEBUG [main] org.lenskit.LenskitRecommenderEngineBuilder: building graph from 4 configurations
+23:41:28.246 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: replacing nodes in graph with 16 nodes
+23:41:28.251 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: found 7 shared nodes
+23:41:30.662 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[user] from EntityType[rating] (column TypedName[user: long])
+23:41:30.705 INFO [main] org.lenskit.data.dao.file.StaticDataSource: deriving entity type EntityType[item] from EntityType[rating] (column TypedName[item: long])
+23:41:30.743 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 2500 entities with type EntityType[item] and 2 indexes
+23:41:30.774 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 264505 entities with type EntityType[rating] and 2 indexes
+23:41:30.785 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 94875 entities with type EntityType[item-tag] and 2 indexes
+23:41:30.786 DEBUG [main] org.lenskit.data.entities.EntityCollectionBuilder: built collection of 862 entities with type EntityType[user] and 2 indexes
+23:41:30.865 INFO [main] org.lenskit.data.ratings.RatingSummaryProvider: summarized 2500 items with 264505 ratings
+23:41:30.879 INFO [main] org.lenskit.mooc.svd.SVDModelBuilder: creating 862 by 2500 rating matrix
+23:41:30.951 INFO [main] org.lenskit.mooc.svd.SVDModelBuilder: factorizing matrix
+23:42:36.523 INFO [main] org.lenskit.mooc.svd.SVDModelBuilder: decomposed matrix has rank 861
+23:42:36.526 INFO [main] org.lenskit.mooc.svd.SVDModelBuilder: truncating matrix to 25 features
+23:42:36.528 DEBUG [main] org.lenskit.inject.RecommenderInstantiator: final graph has 16 nodes
+23:42:36.529 INFO [main] org.lenskit.cli.util.RecommenderLoader: built recommender in 1.139 min
+23:42:36.539 INFO [main] org.lenskit.cli.commands.Recommend: recommending for 1 users
+23:42:36.544 DEBUG [main] org.lenskit.basic.TopNItemRecommender: computing effective candidates for user 320 from 2500 candidates and 62 excluded items
+23:42:36.545 DEBUG [main] org.lenskit.basic.TopNItemRecommender: Computing 10 recommendations for user 320 from 2438 candidates
+23:42:36.569 INFO [main] org.lenskit.cli.commands.Recommend: recommended for 1 users in 26.54 ms
+23:42:36.569 INFO [main] org.lenskit.cli.Main: If you use LensKit in published research, please see http://lenskit.org/research/
