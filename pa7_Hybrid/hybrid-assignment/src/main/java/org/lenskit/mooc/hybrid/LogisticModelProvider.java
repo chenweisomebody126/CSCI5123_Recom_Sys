@@ -1,5 +1,8 @@
 package org.lenskit.mooc.hybrid;
 
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
+import org.grouplens.lenskit.iterative.IterationCount;
 import org.lenskit.api.ItemScorer;
 import org.lenskit.api.Result;
 import org.lenskit.bias.BiasModel;
@@ -8,6 +11,7 @@ import org.lenskit.data.ratings.Rating;
 import org.lenskit.data.ratings.RatingSummary;
 import org.lenskit.inject.Transient;
 import org.lenskit.util.ProgressLogger;
+import org.lenskit.util.math.Vectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,10 +56,53 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
         List<ItemScorer> scorers = recommenders.getItemScorers();
         double intercept = 0;
         double[] params = new double[parameterCount];
-
         LogisticModel current = LogisticModel.create(intercept, params);
 
         // TODO Implement model training
+        List<Rating> tuneRatings = dataSplit.getTuneRatings();
+        for(int itera=0; itera<ITERATION_COUNT; itera++){
+            Collections.shuffle(tuneRatings);
+            logger.info("{} th iteration", itera);
+
+            for (Rating r: tuneRatings){
+                long itemId = r.getItemId();
+                long userId = r.getUserId();
+                double b_ui = baseline.getIntercept() + baseline.getItemBias(itemId) + baseline.getUserBias(userId);
+                double lg_popularity = Math.log10(ratingSummary.getItemRatingCount(itemId));
+
+                RealVector x_array = new ArrayRealVector(parameterCount);
+
+                double y =r.getValue();
+
+                x_array.setEntry(0, b_ui);
+                x_array.setEntry(1, lg_popularity);
+                int i=2;
+                for (ItemScorer scorer: scorers){
+                    //logger.info("{} before duandian {}", i, b_ui);
+                    Result score_result = scorer.score(userId, itemId);
+                    if (score_result == null) {
+                        x_array.setEntry(i,0.);
+                        i+=1;
+                        continue;
+                    }
+                    double x_value = score_result.getScore() - b_ui;
+                    //logger.info("{} duandian", i);
+                    x_array.setEntry(i, x_value);
+                    i+=1;
+                }
+                double sigmoid = current.evaluate(-y, x_array);
+
+                intercept += LEARNING_RATE*y*sigmoid;
+                for (int j=0; j<parameterCount;j++){
+                    params[j] += LEARNING_RATE*y*x_array.getEntry(j)*sigmoid;
+                }
+
+                current = LogisticModel.create(intercept, params);
+
+            }
+            logger.info("{} intercept", intercept);
+
+        }
 
         return current;
     }
