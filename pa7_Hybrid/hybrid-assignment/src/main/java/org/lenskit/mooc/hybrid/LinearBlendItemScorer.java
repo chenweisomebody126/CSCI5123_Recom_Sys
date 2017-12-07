@@ -1,6 +1,7 @@
 package org.lenskit.mooc.hybrid;
 
 import com.google.common.base.Preconditions;
+import org.grouplens.lenskit.vectors.SparseVector;
 import org.lenskit.api.ItemScorer;
 import org.lenskit.api.Result;
 import org.lenskit.api.ResultMap;
@@ -10,9 +11,7 @@ import org.lenskit.results.Results;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Item scorer that computes a linear blend of two scorers' scores.
@@ -50,6 +49,21 @@ public class LinearBlendItemScorer extends AbstractItemScorer {
         List<Result> results = new ArrayList<>();
 
         // TODO Compute hybrid scores
+        Map<Long, Double> leftmap = leftScorer.score(user, items);
+        Map<Long, Double> rightmap = rightScorer.score(user, items);
+
+        for(long i : items) {
+            double b_ui = biasModel.getIntercept() + biasModel.getItemBias(i) + biasModel.getUserBias(user);
+            if (leftmap.get(i) == null) {
+                leftmap.put(i, b_ui);
+            }
+            if (rightmap.get(i) == null) {
+                rightmap.put(i, b_ui);
+            }
+            double s_ui = b_ui + (1.0 - blendWeight) * (leftmap.get(i) - b_ui) + blendWeight * (rightmap.get(i) - b_ui);
+            results.add(Results.create(i, s_ui));
+
+        }
 
         return Results.newResultMap(results);
     }
