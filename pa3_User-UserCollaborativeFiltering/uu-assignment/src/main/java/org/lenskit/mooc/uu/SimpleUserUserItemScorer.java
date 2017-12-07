@@ -1,11 +1,7 @@
 package org.lenskit.mooc.uu;
 
-import com.google.common.collect.Maps;
-import it.unimi.dsi.fastutil.longs.Long2DoubleMap;
 import it.unimi.dsi.fastutil.longs.Long2DoubleOpenHashMap;
-import it.unimi.dsi.fastutil.longs.Long2DoubleSortedMap;
 import it.unimi.dsi.fastutil.longs.LongSet;
-import org.apache.commons.math3.geometry.euclidean.oned.Vector1D;
 import org.lenskit.api.Result;
 import org.lenskit.api.ResultMap;
 import org.lenskit.basic.AbstractItemScorer;
@@ -13,12 +9,7 @@ import org.lenskit.data.dao.DataAccessObject;
 import org.lenskit.data.entities.CommonAttributes;
 import org.lenskit.data.entities.CommonTypes;
 import org.lenskit.data.ratings.Rating;
-import org.lenskit.results.BasicResultMap;
 import org.lenskit.results.Results;
-import org.lenskit.util.ScoredIdAccumulator;
-import org.lenskit.util.TopNScoredIdAccumulator;
-import org.lenskit.util.collections.LongUtils;
-import org.lenskit.util.math.Scalars;
 import org.lenskit.util.math.Vectors;
 
 import javax.annotation.Nonnull;
@@ -30,7 +21,8 @@ import java.util.*;
  * User-user item scorer.
  * @author <a href="http://www.grouplens.org">GroupLens Research</a>
  */
-public class SimpleUserUserItemScorer extends AbstractItemScorer {
+public class
+SimpleUserUserItemScorer extends AbstractItemScorer {
     private final DataAccessObject dao;
     private final int neighborhoodSize;
 

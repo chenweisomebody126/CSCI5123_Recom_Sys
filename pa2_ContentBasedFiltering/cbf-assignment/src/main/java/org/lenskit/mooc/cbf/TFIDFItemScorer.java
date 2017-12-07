@@ -12,10 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.Math.sqrt;
 
@@ -105,6 +102,9 @@ public class TFIDFItemScorer extends AbstractItemScorer {
 
             //throw new UnsupportedOperationException("stub implementation");
         }
+
+//        Collections.sort(results, Results.scoreOrder().reverse());
+//        results.subList(0,10);
 
         return Results.newResultMap(results);
     }
