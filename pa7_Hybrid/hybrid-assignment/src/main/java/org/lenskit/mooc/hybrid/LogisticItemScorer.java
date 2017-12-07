@@ -46,11 +46,6 @@ public class LogisticItemScorer extends AbstractItemScorer {
         // TODO Implement item scorer
         List<Result> results = new ArrayList<>();
 
-        //RealVector coeff = logisticModel.getCoefficients();
-        //ArrayList<Double> ctr_scores = new ArrayList<>();
-
-        //double expo = logisticModel.getIntercept();
-
         int parameterCount = 1 + recommenders.getRecommenderCount() + 1;
         List<ItemScorer> scorers = recommenders.getItemScorers();
 
@@ -77,19 +72,7 @@ public class LogisticItemScorer extends AbstractItemScorer {
             }
             double y =1.;
             double sigmoid = logisticModel.evaluate(y, x_array);
-            //logger.info("sigmoid {} ", sigmoid);
-//
-//            expo += b_ui * coeff.getEntry(0) + Math.log10(ratingSummary.getItemRatingCount(item)) * coeff.getEntry(1);
-//
-//            for (ItemScorer is : recommenders.getItemScorers()) {
-//                ctr_scores.add(is.score(user, item).getScore() - b_ui);
-//            }
-//
-//            for (int i = 2; i < coeff.getDimension(); ++i) {
-//                expo += coeff.getEntry(i) * ctr_scores.get(i - 1);
-//            }
-//
-//            double prob = 1 / (1 + Math.exp(-expo));
+
             results.add(Results.create(item, sigmoid));
         }
 

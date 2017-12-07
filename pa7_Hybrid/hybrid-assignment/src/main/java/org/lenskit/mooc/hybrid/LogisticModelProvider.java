@@ -78,7 +78,6 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
                 x_array.setEntry(1, lg_popularity);
                 int i=2;
                 for (ItemScorer scorer: scorers){
-                    //logger.info("{} before duandian {}", i, b_ui);
                     Result score_result = scorer.score(userId, itemId);
                     if (score_result == null) {
                         x_array.setEntry(i,0.);
@@ -86,10 +85,10 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
                         continue;
                     }
                     double x_value = score_result.getScore() - b_ui;
-                    //logger.info("{} duandian", i);
                     x_array.setEntry(i, x_value);
                     i+=1;
                 }
+                //take care, put -y below based on evaluate declaration
                 double sigmoid = current.evaluate(-y, x_array);
 
                 intercept += LEARNING_RATE*y*sigmoid;
@@ -100,7 +99,7 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
                 current = LogisticModel.create(intercept, params);
 
             }
-            logger.info("{} intercept", intercept);
+            //logger.info("{} intercept", intercept);
 
         }
 
