@@ -51,7 +51,7 @@ public class LogisticItemScorer extends AbstractItemScorer {
 
         for (long item : items) {
             double b_ui = biasModel.getIntercept() + biasModel.getItemBias(item) + biasModel.getUserBias(user);
-            double lg_popularity = Math.log10(ratingSummary.getItemRatingCount(item));
+            double lg_popularity = Math.log(ratingSummary.getItemRatingCount(item));
             RealVector x_array = new ArrayRealVector(parameterCount);
 
             x_array.setEntry(0, b_ui);

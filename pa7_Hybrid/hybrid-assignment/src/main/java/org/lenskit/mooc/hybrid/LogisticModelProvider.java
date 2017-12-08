@@ -68,7 +68,7 @@ public class LogisticModelProvider implements Provider<LogisticModel> {
                 long itemId = r.getItemId();
                 long userId = r.getUserId();
                 double b_ui = baseline.getIntercept() + baseline.getItemBias(itemId) + baseline.getUserBias(userId);
-                double lg_popularity = Math.log10(ratingSummary.getItemRatingCount(itemId));
+                double lg_popularity = Math.log(ratingSummary.getItemRatingCount(itemId));
 
                 RealVector x_array = new ArrayRealVector(parameterCount);
 
